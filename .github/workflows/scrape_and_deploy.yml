@@ -1,0 +1,36 @@
+name: Uhrforum Scraper
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Läuft einmal pro Stunde (Minute 0)
+  workflow_dispatch:      # Ermöglicht es dir, das Skript manuell per Klick zu starten
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Wichtig, damit GitHub die erstellte HTML-Datei speichern darf
+
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Python installieren
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install -r requirements.txt
+
+      - name: Scraper ausführen
+        run: python scraper.py
+
+      - name: Ergebnisse speichern (Commit & Push)
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add angebote.html
+          git commit -m "Automatisches Update der Angebote: $(date)" || echo "Keine Änderungen"
+          git push
