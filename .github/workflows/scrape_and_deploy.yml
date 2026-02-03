@@ -2,7 +2,7 @@ name: Uhrforum Scraper
 
 on:
   schedule:
-    - cron: '0 * * * *' # Läuft einmal pro Stunde (Minute 0)
+   # - cron: '0 * * * *' # Läuft einmal pro Stunde (Minute 0)
   workflow_dispatch:      # Ermöglicht es dir, das Skript manuell per Klick zu starten
 
 jobs:
